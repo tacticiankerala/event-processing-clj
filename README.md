@@ -189,6 +189,9 @@ psql> select * from recentMeetups;
 |   21 |   1389390 | Denver                | new age/spirituality     |
 ```
 
+### Dashboard
+
+Goto `http://localhost:3000` to access onyx dashboard
 
 ### Tips
 1. Whenever you make a code change, you need to re-run the `script/build.sh` to remake your docker container with the new jar.

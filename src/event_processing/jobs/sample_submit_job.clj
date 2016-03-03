@@ -9,7 +9,9 @@
               [event-processing.lifecycles.logging :refer [add-logging]]
               [event-processing.workflows.sample-workflow :refer [build-workflow]]
               [aero.core :refer [read-config]]
-              [onyx.api]))
+              [onyx.api]
+              [onyx.lifecycle.metrics.websocket]
+              [onyx.lifecycle.metrics.metrics]))
 
 ;;;;
 ;; Lets build a job
@@ -45,9 +47,10 @@
                                                           :sql/user "postgres"
                                                           :sql/password "postgres"
                                                           :sql/table :recentMeetups})
-      true (add-metrics :write-lines {:metrics/buffer-capacity 10000
-                                                   :metrics/workflow-name "meetup-workflow"
-                                                   :metrics/sender-fn :onyx.lifecycle.metrics.timbre/timbre-sender})
+      true (add-metrics :all {:metrics/buffer-capacity 10000
+                              :metrics/sender-fn :onyx.lifecycle.metrics.websocket/websocket-sender
+                              :websocket/address "ws://dashboard:3000/metrics"
+                              :metrics/workflow-name "meetup-workflow"})
       true (add-logging :write-lines))))
 
 (defn -main [& args]

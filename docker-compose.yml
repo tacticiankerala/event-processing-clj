@@ -5,6 +5,7 @@ peer:
           - kafka:kafka
           - db:db
           - kafkacat:kafkacat
+          - dashboard:dashboard
         environment:
           ONYX_ID: 1
           NPEERS: 6
@@ -39,3 +40,9 @@ kafkacat:
           - kafka:kafka
         environment:
           BROKER_LIST: kafka:9092
+dashboard:
+        build: script/dashboard
+        links:
+          - zookeeper:zk
+        ports:
+          - "3000:3000"
