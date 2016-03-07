@@ -1,7 +1,9 @@
 (ns event-processing.functions.sample-functions
     (:require [clojure
-               [string :refer [capitalize trim]]
-               [walk :refer [postwalk]]]))
+               [string :refer [capitalize trim]]]
+              [taoensso.timbre :refer [info]]
+              [cheshire.core :refer [parse-string]]
+              [clj-time.coerce :as time-coerce]))
 
 ;;; Defines functions to be used by the peers. These are located
 ;;; with fully qualified namespaced keywords, such as
@@ -18,17 +20,16 @@
 
 (defn transform-segment-shape
   "Recursively restructures a segment {:new-key [paths...]}"
-  [paths segment]
-  (try (let [f (fn [[k v]]
-                 (if (vector? v)
-                   [k (get-in segment v)]
-                   [k v]))]
-         (postwalk (fn [x] (if (map? x) (into {} (map f x)) x)) paths))
-       (catch Exception e
-         segment)))
+  [segment]
+  (update-in segment [:createdAt] #(time-coerce/to-timestamp (time-coerce/from-long (Long/parseLong %)))))
 
 (defn get-in-segment [keypath segment]
   (get-in segment keypath))
 
 (defn prepare-rows [segment]
+  (info (str "******>>> " segment))
   {:rows [segment]})
+
+(defn rabbitmq-deserializer
+  [^bytes payload]
+  (parse-string (String. payload "UTF-8") true))

@@ -6,12 +6,12 @@
 
 (defmethod build-workflow :dev
   [ctx]
-  [[:read-lines  :extract-meetup-info]
-   [:extract-meetup-info :prepare-rows]
+  [[:read-lines  :extract-heartbeat-info]
+   [:extract-heartbeat-info :prepare-rows]
    [:prepare-rows :write-lines]])
 
 (defmethod build-workflow :prod
   [ctx]
-  [[:read-lines :extract-meetup-info]
-   [:extract-meetup-info :prepare-rows]
+  [[:read-lines :extract-heartbeat-info]
+   [:extract-heartbeat-info :prepare-rows]
    [:prepare-rows :write-lines]])

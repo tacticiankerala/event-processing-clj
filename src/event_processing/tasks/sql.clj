@@ -1,5 +1,6 @@
 (ns event-processing.tasks.sql
   (:require [schema.core :as s]
+            [onyx.plugin.sql]
             [taoensso.timbre :refer [info]]))
 
 ;; TODO, add read-rows function task
@@ -25,7 +26,7 @@
                                     ;; to be processed within :onyx/pending-timeout, 60s by default
                                     :sql/rows-per-segment 500
                                     :onyx/max-pending 1000
-                                    :onyx/max-peers 1
+                                    ;;:onyx/max-peers 1
                                     :onyx/doc "Partitions a range of primary keys into subranges"}
                                    opts))
       (update :lifecycles conj {:lifecycle/task task

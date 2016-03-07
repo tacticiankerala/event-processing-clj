@@ -12,7 +12,9 @@
                  [org.onyxplatform/onyx-seq "0.8.6.0"]
                  [cheshire "5.5.0"]
                  [org.clojure/tools.cli "0.3.3"]
-                 [aero "0.1.3"]]
+                 [aero "0.1.3"]
+                 [onyx-rabbitmq "0.7.0-SNAPSHOT"]
+                 [clj-time "0.11.0"]]
   :profiles {:uberjar {:aot [event-processing.launcher.aeron-media-driver
                              event-processing.launcher.launch-prod-peers]}
              :dev {:dependencies [[org.clojure/tools.namespace "0.2.11"]]

@@ -2,9 +2,8 @@ peer:
         image: 'event-processing:0.1.0'
         links:
           - zookeeper:zk
-          - kafka:kafka
+          - rabbitmq:rabbitmq
           - db:db
-          - kafkacat:kafkacat
           - dashboard:dashboard
         environment:
           ONYX_ID: 1
@@ -13,36 +12,31 @@ peer:
         expose:
           - "40200"
           - "40200/udp"
+          - "1100"
+          - "1100/udp"
 zookeeper:
         image: 'wurstmeister/zookeeper'
         ports:
           - '2181:2181'
-kafka:
-        image: 'wurstmeister/kafka'
-        environment:
-          KAFKA_BROKER_ID: 1
-        links:
-          - zookeeper:zk
-        ports:
-          - "9092:9092"
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
 db:
-        image: postgres
+        build: script/postgres
         environment:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
         ports:
           - "5432:5432"
-kafkacat:
-        build: script/kafka-meetup-streamer
-        links:
-          - kafka:kafka
-        environment:
-          BROKER_LIST: kafka:9092
 dashboard:
         build: script/dashboard
         links:
           - zookeeper:zk
         ports:
           - "3000:3000"
+rabbitmq:
+        build: script/rabbitmq
+        environment:
+          RABBITMQ_ERLANG_COOKIE: KXZFFRENCWPZNDVWSRQJ
+        ports:
+          - "15672:15672"
+          - "5672:5672"
+          - "1883:1883"
+          - "8883:8883"

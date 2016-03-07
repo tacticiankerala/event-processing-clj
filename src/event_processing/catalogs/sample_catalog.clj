@@ -27,15 +27,11 @@
     :onyx/batch-timeout batch-timeout
     :onyx/doc "Capitalizes the first letter of the line"}
 
-   {:onyx/name :extract-meetup-info
+   {:onyx/name :extract-heartbeat-info
     :onyx/fn :event-processing.functions.sample-functions/transform-segment-shape
     :onyx/type :function
     :onyx/batch-size batch-size
     :onyx/batch-timeout batch-timeout
-    :keypath {"groupId" ["group" "id"]
-              "groupCity" ["group" "city"]
-              "category" ["group" "category" "name"]}
-    :onyx/params [:keypath]
     :onyx/doc "Extracts group-id group-city and category"}
 
    {:onyx/name :prepare-rows
